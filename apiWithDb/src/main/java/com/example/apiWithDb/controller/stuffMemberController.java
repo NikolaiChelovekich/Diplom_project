@@ -2,7 +2,10 @@ package com.example.apiWithDb.controller;
 
 
 import com.example.apiWithDb.model.StuffMember;
+import com.example.apiWithDb.response.ResponseHandler;
 import com.example.apiWithDb.service.StuffMemberService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,15 +21,15 @@ public class stuffMemberController {
     }
 
     @GetMapping()
-    public List<StuffMember> getStuffMemberDetails()
+    public ResponseEntity<Object> getStuffMemberDetails()
     {
-        return stuffMemberService.getAllStuffMembers();
+        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, stuffMemberService.getAllStuffMembers());
     }
 
     @GetMapping("{stuffMemberId}")
-    public StuffMember getStuffMemberDetails(@PathVariable("stuffMemberId") String stuffMemberId)
+    public ResponseEntity<Object> getStuffMemberDetails(@PathVariable("stuffMemberId") String stuffMemberId)
     {
-        return stuffMemberService.getStuffMember(stuffMemberId);
+        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, stuffMemberService.getStuffMember(stuffMemberId));
     }
 
     @PostMapping
