@@ -22,11 +22,17 @@ public class User {
     @Column(name = "first_name",nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "lastName", nullable = false)
     private String lastName;
 
     @Column(nullable = false)
     private String login;
+
+    @Column(nullable = false)
+    private String country;
+
+    @Column(nullable = false)
+    private String role;
 
     @Column(nullable = false)
     private String password;
