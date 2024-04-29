@@ -48,7 +48,7 @@ public class UserAuthProvider {
 
         DecodedJWT decoded = verifier.verify(token);
 
-        UserDto user = userService.fingByLogin(decoded.getIssuer());
+        UserDto user = userService.findBylogin(decoded.getIssuer());
 
         return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }

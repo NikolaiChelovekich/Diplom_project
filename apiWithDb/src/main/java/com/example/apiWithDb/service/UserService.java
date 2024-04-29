@@ -23,15 +23,15 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDto fingByLogin(String login)
+    public UserDto findBylogin(String login)
     {
-        User user = userRepository.findByLogin(login)
+        User user = userRepository.findBylogin(login)
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
         return userMapper.toUserDto(user);
     }
 
     public UserDto login(CredentialsDto credentialsDto){
-        User user = userRepository.findByLogin(credentialsDto.getLogin())
+        User user = userRepository.findBylogin(credentialsDto.getLogin())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         if(passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()),user.getPassword()))
@@ -43,7 +43,7 @@ public class UserService {
 
     public UserDto register(SignUpDto userDto)
     {
-        Optional<User> optionalUser = userRepository.findByLogin(userDto.getLogin());
+        Optional<User> optionalUser = userRepository.findBylogin(userDto.getLogin());
 
         if(optionalUser.isPresent())
         {
