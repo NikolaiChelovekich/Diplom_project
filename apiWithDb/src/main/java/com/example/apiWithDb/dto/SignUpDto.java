@@ -1,5 +1,6 @@
 package com.example.apiWithDb.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +17,5 @@ public class SignUpDto {
     private String login;
     private String country;
     private String role;
-    private char[] password;
+    private String password;
 }
