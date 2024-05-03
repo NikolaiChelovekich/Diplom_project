@@ -36,4 +36,7 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToOne(mappedBy = "user")
+    private ForgotPassword forgotPassword;
 }
