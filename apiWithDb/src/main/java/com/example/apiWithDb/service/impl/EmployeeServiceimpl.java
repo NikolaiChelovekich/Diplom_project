@@ -1,5 +1,6 @@
 package com.example.apiWithDb.service.impl;
 
+import com.example.apiWithDb.entities.Employee;
 import com.example.apiWithDb.exception.EmployeeNotFoundException;
 import com.example.apiWithDb.repository.employeeRepository;
 import com.example.apiWithDb.service.EmployeeService;
@@ -17,7 +18,7 @@ public class EmployeeServiceimpl implements EmployeeService {
     }
 
     @Override
-    public String createEmployee(com.example.apiWithDb.entities.Employee employee) {
+    public String createEmployee(Employee employee) {
         employeeRepository.save(employee);
         return "Success";
     }

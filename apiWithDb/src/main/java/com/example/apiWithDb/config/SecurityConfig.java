@@ -19,32 +19,22 @@ public class SecurityConfig {
     private final UserAuthProvider userAuthProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
-    {
-      http
-              .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
-              .and()
-              .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
-              .csrf().disable()
-              .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-              .and()
-              .authorizeHttpRequests((requests) -> requests
-                      .requestMatchers(
-                              "/login",
-                              "/register",
-                              "/v2/api-docs",
-                              "/v2/api-docs/**",
-                              "/v3/api-docs",
-                              "v3/api-docs/**",
-                              "/swagger-ui/**",
-                              "/swagger-ui.html",
-                              "/forgotPassword",
-                              "/forgotPassword/**"
-                              ).permitAll()
-                      .anyRequest().authenticated()
-              );
-      return http.build();
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
+                .and()
+                .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeHttpRequests((requests) -> requests
+                        // Уберите эндпоинты, для которых требуется аутентификация
+                        .requestMatchers("/employee/**", "/company/**").authenticated()
+                        // Позволяйте доступ ко всем остальным эндпоинтам без аутентификации
+                        .anyRequest().permitAll()
+                );
+        return http.build();
     }
+
 
 }
