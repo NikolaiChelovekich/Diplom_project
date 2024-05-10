@@ -26,19 +26,19 @@ public class UserService {
     public UserDto findBylogin(String login)
     {
         User user = userRepository.findBylogin(login)
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND,404));
         return userMapper.toUserDto(user);
     }
 
     public UserDto login(CredentialsDto credentialsDto){
         User user = userRepository.findBylogin(credentialsDto.getLogin())
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND,404));
 
         if(passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()),user.getPassword()))
         {
             return userMapper.toUserDto(user);
         }
-        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
+        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST,400);
     }
 
     public UserDto register(SignUpDto userDto)
@@ -47,7 +47,7 @@ public class UserService {
 
         if(optionalUser.isPresent())
         {
-            throw new AppException("Login alrdy existst", HttpStatus.BAD_REQUEST);
+            throw new AppException("User already exist", HttpStatus.BAD_REQUEST,400);
         }
 
         User user = userMapper.signUpToUser(userDto);
