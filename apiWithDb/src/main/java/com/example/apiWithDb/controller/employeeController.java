@@ -3,12 +3,14 @@ package com.example.apiWithDb.controller;
 
 import com.example.apiWithDb.response.ResponseHandler;
 import com.example.apiWithDb.service.EmployeeService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/employee")
+@SecurityRequirement(name = "bearerAuth")
 public class employeeController {
 
     public EmployeeService employeeService;
