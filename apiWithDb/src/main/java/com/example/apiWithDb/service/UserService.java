@@ -9,6 +9,7 @@ import com.example.apiWithDb.mappers.UserMapper;
 import com.example.apiWithDb.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +58,12 @@ public class UserService {
         User saveduser = userRepository.save(user);
 
         return userMapper.toUserDto(user);
+    }
+
+    public User findUserByToken(Authentication authentication) {
+        UserDto userDto = (UserDto) authentication.getPrincipal();
+        return userRepository.findBylogin(userDto.getLogin())
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND, 404));
     }
 
 
