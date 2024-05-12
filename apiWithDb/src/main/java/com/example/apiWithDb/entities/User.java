@@ -34,7 +34,8 @@ public class User {
     @Column(nullable = false)
     private String country;
 
-    @Column(nullable = false)
+    @JsonIgnore
+    @Column(nullable = true)
     private String role;
 
     @Column(nullable = false)
