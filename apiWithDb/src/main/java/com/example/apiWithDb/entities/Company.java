@@ -20,7 +20,7 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private Integer  compid;
+    private Long  id;
 
     @Column(nullable = false)
     private String compName;
@@ -48,7 +48,7 @@ public class Company {
 
 
     @JsonIgnore
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

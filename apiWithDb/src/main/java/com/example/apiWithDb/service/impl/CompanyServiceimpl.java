@@ -1,9 +1,14 @@
 package com.example.apiWithDb.service.impl;
 
+import com.example.apiWithDb.dto.UserDto;
 import com.example.apiWithDb.entities.Company;
+import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.exception.AppException;
 import com.example.apiWithDb.repository.CompanyRepository;
 import com.example.apiWithDb.service.CompanyService;
+import com.example.apiWithDb.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,41 +17,53 @@ import java.util.List;
 public class CompanyServiceimpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final UserService userService;
 
 
-    public CompanyServiceimpl(CompanyRepository companyRepository) {
+    public CompanyServiceimpl(CompanyRepository companyRepository, UserService userService) {
         this.companyRepository = companyRepository;
+        this.userService = userService;
     }
 
     @Override
-    public String createCompany(Company company) {
+    public String createCompany(Company company,Authentication authentication) {
+        User user = userService.findUserByToken(authentication);
+        company.setUser(user);
         companyRepository.save(company);
         return "Success";
     }
 
     @Override
-    public String updateCompany(Company company) {
+    public String updateCompany(Company company,Authentication authentication) {
+        User user = userService.findUserByToken(authentication);
+        company.setUser(user);
         companyRepository.save(company);
         return "Success";
     }
 
     @Override
-    public String deleteCompany(Integer companyId) {
+    public String deleteCompany(Integer companyId, Authentication authentication) {
+        User user = userService.findUserByToken(authentication);
         if(companyRepository.findById(companyId).isEmpty())
-            throw new RuntimeException("Запрошенная компания не существует!");
-        companyRepository.deleteById(companyId);
+            throw new AppException("Запрошенная компания не существует!",HttpStatus.NOT_FOUND,404);
+        companyRepository.deleteCompanyByIdAndUserId(companyId,user.getId());
         return "Success";
     }
 
     @Override
-    public Company getCompany(Integer companyId) {
+    public Company getCompany(Integer companyId,Authentication authentication) {
+        User user = userService.findUserByToken(authentication);
+
         if(companyRepository.findById(companyId).isEmpty())
-            throw new RuntimeException("Запрошенная компания не существует!");
-        return companyRepository.findById(companyId).get();
+            throw new AppException("Запрошенная компания не существует!",HttpStatus.NOT_FOUND,404);
+        return companyRepository.findByIdAndUserId(companyId,user.getId());
     }
 
     @Override
-    public List<Company> getAllCompanys() {
-        return companyRepository.findAll();
+    public List<Company> getAllCompanies(Authentication authentication) {
+        User user = userService.findUserByToken(authentication);
+
+        return companyRepository.findAllCompaniesByUserId(user.getId());
+
     }
 }

@@ -33,37 +33,31 @@ public class CompanyController {
     }
 
     @GetMapping()
-    public ResponseEntity<Object> getCompanyDetails()
-    {
-        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, CompanyService.getAllCompanys());
+    public ResponseEntity<Object> getCompanyDetails(Authentication authentication) {
+        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, CompanyService.getAllCompanies(authentication));
     }
 
     @GetMapping("{CompanyId}")
-    public ResponseEntity<Object> getCompanyDetails(@PathVariable("CompanyId") String CompanyId)
-    {
-        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, CompanyService.getCompany(CompanyId));
+    public ResponseEntity<Object> getCompanyDetails(@PathVariable("CompanyId") Integer CompanyId,Authentication authentication) {
+        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, CompanyService.getCompany(CompanyId,authentication));
     }
 
     @PostMapping
     public String CreateCompanyDetails(@RequestBody Company company, Authentication authentication) {
-        User user = userService.findUserByToken(authentication);
-        company.setUser(user);
-        CompanyService.createCompany(company);
+        CompanyService.createCompany(company, authentication);
         return "Company Created!";
     }
 
 
     @PutMapping
-    public String UpdateCompanyDetails(@RequestBody  Company Company)
-    {
-        CompanyService.updateCompany(Company);
+    public String UpdateCompanyDetails(@RequestBody  Company Company,Authentication authentication){
+        CompanyService.updateCompany(Company,authentication);
         return "Company Updated!";
     }
 
     @DeleteMapping("{CompanyId}")
-    public String deleteCompany(@PathVariable("CompanyId") Integer CompanyId)
-    {
-        CompanyService.deleteCompany(CompanyId);
+    public String deleteCompany(@PathVariable("CompanyId") Integer CompanyId, Authentication authentication){
+        CompanyService.deleteCompany(CompanyId,authentication);
         return "Company Deleted!";
     }
 }
