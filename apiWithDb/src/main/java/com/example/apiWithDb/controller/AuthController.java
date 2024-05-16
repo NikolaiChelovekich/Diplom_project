@@ -5,6 +5,7 @@ import com.example.apiWithDb.dto.CredentialsDto;
 import com.example.apiWithDb.dto.SignUpDto;
 import com.example.apiWithDb.dto.UserDto;
 import com.example.apiWithDb.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class AuthController {
     private final UserAuthProvider userAuthProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<UserDto> login(@RequestBody CredentialsDto credentialsDto){
+    public ResponseEntity<UserDto> login(@Valid @RequestBody CredentialsDto credentialsDto){
        UserDto user  = userService.login(credentialsDto);
 
         user.setToken(userAuthProvider.createToken(user.getLogin()));
@@ -29,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody SignUpDto signUpDto)
+    public ResponseEntity<UserDto> register(@Valid @RequestBody SignUpDto signUpDto)
     {
         UserDto user = userService.register(signUpDto);
         user.setToken(userAuthProvider.createToken(user.getLogin()));
