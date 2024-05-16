@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface CompanyRepository extends JpaRepository<Company,Integer> {
     List<Company> findAllCompaniesByUserId(Long userId);
     Company findByIdAndUserId(Integer id, Long userId);
-
+    Optional<Company> findById(Long id);
     @Transactional
     @Modifying
     String deleteCompanyByIdAndUserId(Integer id, Long userId);

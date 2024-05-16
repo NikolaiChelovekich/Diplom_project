@@ -62,8 +62,9 @@ public class UserService {
 
     public User findUserByToken(Authentication authentication) {
         UserDto userDto = (UserDto) authentication.getPrincipal();
-        return userRepository.findBylogin(userDto.getLogin())
+        User user =  userRepository.findBylogin(userDto.getLogin())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND, 404));
+    return user;
     }
 
 
