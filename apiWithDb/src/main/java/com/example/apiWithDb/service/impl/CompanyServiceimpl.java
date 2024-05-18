@@ -5,6 +5,7 @@ import com.example.apiWithDb.entities.Company;
 import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.exception.AppException;
 import com.example.apiWithDb.repository.CompanyRepository;
+import com.example.apiWithDb.repository.DepartmentRepository;
 import com.example.apiWithDb.service.CompanyService;
 import com.example.apiWithDb.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,13 @@ import java.util.Optional;
 public class CompanyServiceimpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final DepartmentRepository departmentRepository;
     private final UserService userService;
 
 
-    public CompanyServiceimpl(CompanyRepository companyRepository, UserService userService) {
+    public CompanyServiceimpl(CompanyRepository companyRepository, DepartmentRepository departmentRepository, UserService userService) {
         this.companyRepository = companyRepository;
+        this.departmentRepository = departmentRepository;
         this.userService = userService;
     }
 
@@ -63,6 +66,7 @@ public class CompanyServiceimpl implements CompanyService {
 
     @Override
     public String deleteCompany(Integer companyId, Authentication authentication) {
+        departmentRepository.deleteByCompanyId(companyId);
         User user = userService.findUserByToken(authentication);
         Optional<Company> existingCompanyOpt = companyRepository.findById(companyId);
         if (existingCompanyOpt.isEmpty()) {
