@@ -25,6 +25,7 @@ public class SignUpDto {
     @NotBlank(message = "Country is mandatory")
     private String country;
 
+
     private String role;
 
     @NotBlank(message = "Password is mandatory")

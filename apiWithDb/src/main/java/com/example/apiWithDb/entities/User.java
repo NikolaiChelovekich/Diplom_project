@@ -1,5 +1,6 @@
 package com.example.apiWithDb.entities;
 
+import com.example.apiWithDb.utils.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,8 +36,9 @@ public class User {
     private String country;
 
     @JsonIgnore
+    @Enumerated(EnumType.STRING)
     @Column(nullable = true)
-    private String role;
+    private Role role;
 
     @Column(nullable = false)
     private String password;

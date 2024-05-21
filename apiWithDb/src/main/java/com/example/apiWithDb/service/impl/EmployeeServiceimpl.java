@@ -17,12 +17,10 @@ public class EmployeeServiceimpl implements EmployeeService {
 
     private final employeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
-    private final EmployeeMapper employeeMapper;
 
-    public EmployeeServiceimpl(employeeRepository employeeRepository, DepartmentRepository departmentRepository, EmployeeMapper employeeMapper) {
+    public EmployeeServiceimpl(employeeRepository employeeRepository, DepartmentRepository departmentRepository) {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
-        this.employeeMapper = employeeMapper;
     }
 
     @Override
@@ -79,7 +77,6 @@ public class EmployeeServiceimpl implements EmployeeService {
                .firstName(employee.getFirstName())
                .lastName(employee.getLastName())
                .country(employee.getCountry())
-               .role("EMPLOYEE")
                .login(employee.getLogin())
                .password(employee.getPassword())
                .build();

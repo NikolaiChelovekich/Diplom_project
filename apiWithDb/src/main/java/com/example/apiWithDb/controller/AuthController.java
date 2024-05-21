@@ -5,6 +5,7 @@ import com.example.apiWithDb.dto.CredentialsDto;
 import com.example.apiWithDb.dto.SignUpDto;
 import com.example.apiWithDb.dto.UserDto;
 import com.example.apiWithDb.service.UserService;
+import com.example.apiWithDb.utils.Role;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +26,15 @@ public class AuthController {
     public ResponseEntity<UserDto> login(@Valid @RequestBody CredentialsDto credentialsDto){
        UserDto user  = userService.login(credentialsDto);
 
-        user.setToken(userAuthProvider.createToken(user.getLogin()));
+        user.setToken(userAuthProvider.createToken(user));
         return ResponseEntity.ok(user);
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@Valid @RequestBody SignUpDto signUpDto)
     {
-        UserDto user = userService.register(signUpDto);
-        user.setToken(userAuthProvider.createToken(user.getLogin()));
+        UserDto user = userService.register(signUpDto, Role.ADMIN);
+        user.setToken(userAuthProvider.createToken(user));
         return ResponseEntity.created(URI.create("/users/" + user.getId()))
                 .body(user);
     }

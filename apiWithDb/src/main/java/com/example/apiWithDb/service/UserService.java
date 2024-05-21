@@ -7,6 +7,7 @@ import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.exception.AppException;
 import com.example.apiWithDb.mappers.UserMapper;
 import com.example.apiWithDb.repository.UserRepository;
+import com.example.apiWithDb.utils.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -42,7 +43,7 @@ public class UserService {
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST,400);
     }
 
-    public UserDto register(SignUpDto userDto)
+    public UserDto register(SignUpDto userDto, Role role)
     {
         Optional<User> optionalUser = userRepository.findBylogin(userDto.getLogin());
 
@@ -52,9 +53,18 @@ public class UserService {
         }
 
         User user = userMapper.signUpToUser(userDto);
+        switch (role) {
+            case USER:
+                user.setRole(Role.USER);
+                break;
+            case ADMIN:
+                user.setRole(Role.ADMIN);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid role specified");
+        }
 
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.getPassword())));
-
 
         User saveduser = userRepository.save(user);
 

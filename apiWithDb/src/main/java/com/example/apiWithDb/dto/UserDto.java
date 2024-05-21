@@ -1,5 +1,6 @@
 package com.example.apiWithDb.dto;
 
+import com.example.apiWithDb.utils.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class UserDto {
     private String lastName;
     private String login;
     private String country;
-    private String role;
     private String token;
+    private Role role;
 
 }
