@@ -1,6 +1,7 @@
 package com.example.apiWithDb.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,7 @@ public class SignUpDto {
     @NotBlank(message = "Country is mandatory")
     private String country;
 
-
+    @JsonIgnore
     private String role;
 
     @NotBlank(message = "Password is mandatory")

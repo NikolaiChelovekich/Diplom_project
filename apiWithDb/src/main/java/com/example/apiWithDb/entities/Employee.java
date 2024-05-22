@@ -31,7 +31,7 @@ public class Employee {
     private String Country;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Role role;
 
     @Column(nullable = false)
@@ -44,5 +44,10 @@ public class Employee {
     @ManyToOne(targetEntity = Department.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
+
+    @JsonIgnore
+    public Role getRole() {
+        return role;
+    }
 
 }
