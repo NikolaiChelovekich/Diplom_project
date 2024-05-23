@@ -83,7 +83,7 @@ public class CompanyServiceimpl implements CompanyService {
     }
 
     @Override
-    public Company getCompany(Integer companyId, Authentication authentication) {
+    public Company getCompanyForAdmin(Integer companyId, Authentication authentication) {
         User user = userService.findUserByToken(authentication);
 
         // Проверяем, существует ли компания с заданным идентификатором
@@ -99,6 +99,22 @@ public class CompanyServiceimpl implements CompanyService {
         }
 
         return company;
+    }
+
+    @Override
+    public Company getCompanyForEmployee(Authentication authentication) {
+        User user = userService.findUserByToken(authentication);
+
+
+        // Проверяем, существует ли компания с заданным идентификатором
+        Optional<Company> existingCompanyOpt = companyRepository.findCompanyByEmployeeLogin(user.getLogin());
+        if (existingCompanyOpt.isEmpty()) {
+            throw new AppException("Запрошенная компания не существует!", HttpStatus.NOT_FOUND, 404);
+        }
+        // Извлекаем компанию
+        return  existingCompanyOpt.get();
+        // Проверяем, принадлежит ли компания аутентифицированному пользователю
+
     }
 
 

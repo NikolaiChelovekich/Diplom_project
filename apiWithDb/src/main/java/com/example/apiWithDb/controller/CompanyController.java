@@ -32,16 +32,23 @@ public class CompanyController {
         this.userService = userService;
 
     }
-
     @GetMapping()
     public ResponseEntity<Object> getCompanyDetails(Authentication authentication) {
-        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, CompanyService.getAllCompanies(authentication));
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"));
+        boolean isUser = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("USER"));
+
+        Object data = isAdmin ? CompanyService.getAllCompanies(authentication)
+                : isUser ? CompanyService.getCompanyForEmployee(authentication)
+                : null;
+
+        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, data);
     }
 
     @GetMapping("{CompanyId}")
-    public ResponseEntity<Object> getCompanyDetails(@PathVariable("CompanyId") Integer CompanyId,Authentication authentication) {
-        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, CompanyService.getCompany(CompanyId,authentication));
+    public ResponseEntity<Object> getCompanyDetailsForAdmin(@PathVariable("CompanyId") Integer CompanyId,Authentication authentication) {
+        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, CompanyService.getCompanyForAdmin(CompanyId,authentication));
     }
+    
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping

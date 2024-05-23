@@ -9,6 +9,7 @@ import com.example.apiWithDb.service.EmployeeService;
 import com.example.apiWithDb.service.UserService;
 import com.example.apiWithDb.utils.Role;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +46,7 @@ public class employeeController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Transactional
     @PostMapping
     public ResponseEntity<UserDto> CreateEmployeeDetails(@RequestBody Employee employee, @PathVariable("departmentId") Long departmentId) {
 
