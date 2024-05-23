@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceimpl implements EmployeeService {
@@ -35,6 +36,9 @@ public class EmployeeServiceimpl implements EmployeeService {
 
     @Override
     public String updateEmployee(Employee employee, Long departmentId) {
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new AppException("department not found",HttpStatus.NOT_FOUND,404));
+        employee.setDepartment(department);
         employeeRepository.save(employee);
         return "Success";
     }
@@ -82,5 +86,11 @@ public class EmployeeServiceimpl implements EmployeeService {
                .build();
 
        return signUpDto;
+    }
+
+    @Override
+    public Employee findById(Long employeeId) {
+        return employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new AppException("Employee not found", HttpStatus.NOT_FOUND,404) );
     }
 }

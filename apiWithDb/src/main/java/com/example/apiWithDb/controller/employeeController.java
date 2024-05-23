@@ -63,16 +63,12 @@ public class employeeController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping
-    public ResponseEntity<UserDto> UpdateEmployeeDetails(@RequestBody Employee employee,@PathVariable("departmentId") Long departmentId)
+    public String UpdateEmployeeDetails(@RequestBody Employee employee,@PathVariable("departmentId") Long departmentId)
     {
-        UserDto user = userService.register(employeeService.toSignUpDto(employee), Role.USER);
-        user.setRole(Role.USER);
-        user.setToken(userAuthProvider.createToken(user));
-        user.setRole(Role.USER);
-        employeeService.updateEmployee(employee,departmentId);
 
-        return ResponseEntity.created(URI.create("/users/" + user.getId()))
-                .body(user);
+        employeeService.findById(employee.getId());
+        employeeService.updateEmployee(employee,departmentId);
+        return "Employee updated!";
 
     }
 

@@ -13,4 +13,5 @@ public interface employeeRepository extends JpaRepository<Employee, Long> {
     void deleteByIdAndDepartmentId(Long Id, Long departmentId);
     List<Employee> findAllByDepartmentId(Long departmentId);
 
+
 }
