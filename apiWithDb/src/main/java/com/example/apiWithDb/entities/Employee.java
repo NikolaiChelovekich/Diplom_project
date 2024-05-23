@@ -45,7 +45,6 @@ public class Employee {
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 
-
     @JsonIgnore
     public Role getRole() {
         return role;

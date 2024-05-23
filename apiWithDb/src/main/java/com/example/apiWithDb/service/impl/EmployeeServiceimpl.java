@@ -1,9 +1,11 @@
 package com.example.apiWithDb.service.impl;
 
+import com.example.apiWithDb.dto.EmployeeDto;
 import com.example.apiWithDb.dto.SignUpDto;
 import com.example.apiWithDb.entities.Department;
 import com.example.apiWithDb.entities.Employee;
 import com.example.apiWithDb.exception.AppException;
+import com.example.apiWithDb.mappers.EmployeeMapper;
 import com.example.apiWithDb.repository.DepartmentRepository;
 import com.example.apiWithDb.repository.employeeRepository;
 import com.example.apiWithDb.service.EmployeeService;
@@ -18,10 +20,12 @@ public class EmployeeServiceimpl implements EmployeeService {
 
     private final employeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
+    private final EmployeeMapper employeeMapper;
 
-    public EmployeeServiceimpl(employeeRepository employeeRepository, DepartmentRepository departmentRepository) {
+    public EmployeeServiceimpl(employeeRepository employeeRepository, DepartmentRepository departmentRepository, EmployeeMapper employeeMapper) {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
+        this.employeeMapper = employeeMapper;
     }
 
     @Override
@@ -35,9 +39,11 @@ public class EmployeeServiceimpl implements EmployeeService {
     }
 
     @Override
-    public String updateEmployee(Employee employee, Long departmentId) {
+    public String updateEmployee(EmployeeDto employeeDto, Long departmentId) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new AppException("department not found",HttpStatus.NOT_FOUND,404));
+        Employee employee = employeeRepository.findById(employeeDto.getId())
+                        .orElseThrow(() -> new AppException("Employee not found ", HttpStatus.NOT_FOUND,404));
         employee.setDepartment(department);
         employeeRepository.save(employee);
         return "Success";
@@ -56,23 +62,23 @@ public class EmployeeServiceimpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployee(Long employeeId, Long departmentId) {
+    public EmployeeDto getEmployee(Long employeeId, Long departmentId) {
         if(employeeRepository.findById(employeeId).isEmpty())
             throw new AppException("Unknown employee", HttpStatus.NOT_FOUND,404);
 
         if(employeeRepository.findById(employeeId).isEmpty())
             throw new AppException("Unknown department", HttpStatus.NOT_FOUND,404);
 
-        return employeeRepository.findByIdAndDepartmentId(employeeId,departmentId);
+        return employeeMapper.toEmployeeDto(employeeRepository.findByIdAndDepartmentId(employeeId,departmentId));
     }
 
     @Override
-    public List<Employee> getAllEmployees( Long departmentId) {
+    public List<EmployeeDto> getAllEmployees( Long departmentId) {
 
         if(departmentRepository.findById(departmentId).isEmpty())
             throw new AppException("Unknown department", HttpStatus.NOT_FOUND,404);
 
-        return employeeRepository.findAllByDepartmentId(departmentId);
+        return employeeMapper.toEmployeeDtoList(employeeRepository.findAllByDepartmentId(departmentId));
     }
 
     @Override
