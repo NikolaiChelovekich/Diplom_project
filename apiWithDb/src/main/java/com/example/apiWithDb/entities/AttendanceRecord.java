@@ -27,12 +27,11 @@ public class AttendanceRecord {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
-    private LocalDate Date;
+    private LocalDate recordDate;
 
     @Column(nullable = false)
     private LocalTime dailyTimeWorked;
 
-    @JsonIgnore
     @ManyToOne(targetEntity = Employee.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
