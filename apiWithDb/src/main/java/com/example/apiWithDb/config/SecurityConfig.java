@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests((requests) -> requests
                         // Уберите эндпоинты, для которых требуется аутентификация
-                        .requestMatchers("/employee/**", "/company/**").authenticated()
+                        .requestMatchers("/employee/**", "/company/**","/currentUser").authenticated()
                         // Позволяйте доступ ко всем остальным эндпоинтам без аутентификации
                         .anyRequest().permitAll()
                 );

@@ -16,4 +16,5 @@ public interface EmployeeService {
     public List<EmployeeDto> getAllEmployees( Long departmentId);
     public SignUpDto toSignUpDto(Employee employee);
     public Employee findById(Long employeeId);
+    public Employee findByLogin(String login);
 }

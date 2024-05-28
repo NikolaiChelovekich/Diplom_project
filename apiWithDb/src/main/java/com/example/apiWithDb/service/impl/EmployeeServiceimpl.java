@@ -99,4 +99,10 @@ public class EmployeeServiceimpl implements EmployeeService {
         return employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new AppException("Employee not found", HttpStatus.NOT_FOUND,404) );
     }
+
+    @Override
+    public Employee findByLogin(String login) {
+        return employeeRepository.findByLogin(login)
+                .orElseThrow(() -> new AppException("Employee not found", HttpStatus.NOT_FOUND,404) );
+    }
 }
