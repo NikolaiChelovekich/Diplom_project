@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Entity
 @Table(name="employees")
 @Data
@@ -26,6 +29,15 @@ public class Employee {
 
     @Column(nullable = false)
     private String employeePhoto;
+
+    @Column(nullable = false)
+    private String PhoneNumber;
+
+    @Column(nullable = false)
+    private String Position;
+
+    @Column(nullable = false)
+    private Date BirthDate;
 
     @Column(nullable = false)
     private String Country;

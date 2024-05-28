@@ -11,15 +11,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 public class EmployeeDto {
-    private Long  id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String employeePhoto;
-    @JsonProperty("Country") // Указываем, что это поле должно маппиться на поле "Country" в сущности
+    @JsonProperty("country")
     private String country;
+    @JsonProperty("phoneNumber")
+    private String phoneNumber;
+    @JsonProperty("position")
+    private String position;
+    @JsonProperty("birthDate")
+    private Date birthDate;
 }
