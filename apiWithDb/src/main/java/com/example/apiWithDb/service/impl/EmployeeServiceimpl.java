@@ -66,10 +66,10 @@ public class EmployeeServiceimpl implements EmployeeService {
         if(employeeRepository.findById(employeeId).isEmpty())
             throw new AppException("Unknown employee", HttpStatus.NOT_FOUND,404);
 
-        if(employeeRepository.findById(employeeId).isEmpty())
+        if(departmentRepository.findById(departmentId).isEmpty())
             throw new AppException("Unknown department", HttpStatus.NOT_FOUND,404);
 
-        return employeeMapper.toEmployeeDto(employeeRepository.findByIdAndDepartmentId(employeeId,departmentId));
+        return employeeMapper.toEmployeeDto(employeeRepository.findByIdAndDepartmentId(employeeId, departmentId));
     }
 
     @Override

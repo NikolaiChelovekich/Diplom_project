@@ -26,9 +26,6 @@ public class SignUpDto {
     @NotBlank(message = "Country is mandatory")
     private String country;
 
-    @JsonIgnore
-    private String role;
-
     @NotBlank(message = "Password is mandatory")
     private String password;
 

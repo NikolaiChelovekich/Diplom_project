@@ -16,7 +16,7 @@ public interface CompanyRepository extends JpaRepository<Company,Integer> {
     Optional<Company> findById(Long id);
     @Transactional
     @Modifying
-    String deleteCompanyByIdAndUserId(Integer id, Long userId);
+    String deleteCompanyByIdAndUserId(Long id, Long userId);
 
     @Query("SELECT c FROM Company c " +
             "JOIN Department d ON c.id = d.company.id " +

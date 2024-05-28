@@ -45,7 +45,7 @@ public class CompanyController {
     }
 
     @GetMapping("{CompanyId}")
-    public ResponseEntity<Object> getCompanyDetailsForAdmin(@PathVariable("CompanyId") Integer CompanyId,Authentication authentication) {
+    public ResponseEntity<Object> getCompanyDetailsForAdmin(@PathVariable("CompanyId") Long CompanyId,Authentication authentication) {
         return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, CompanyService.getCompanyForAdmin(CompanyId,authentication));
     }
     
@@ -67,7 +67,7 @@ public class CompanyController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("{CompanyId}")
-    public String deleteCompany(@PathVariable("CompanyId") Integer CompanyId, Authentication authentication){
+    public String deleteCompany(@PathVariable("CompanyId") Long CompanyId, Authentication authentication){
         CompanyService.deleteCompany(CompanyId,authentication);
         return "Company Deleted!";
     }

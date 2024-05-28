@@ -24,7 +24,7 @@ public class Department {
     private String Name;
 
     @JsonIgnore
-    @ManyToOne(targetEntity = Company.class, cascade = CascadeType.PERSIST)
+    @ManyToOne(targetEntity = Company.class)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     private Company company;
 

@@ -47,5 +47,7 @@ public class User {
     @OneToOne(mappedBy = "user")
     private ForgotPassword forgotPassword;
 
-
+    public User(String login) {
+        this.login = login;
+    }
 }

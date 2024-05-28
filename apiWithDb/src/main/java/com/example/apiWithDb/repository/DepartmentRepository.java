@@ -17,5 +17,7 @@ public interface DepartmentRepository extends JpaRepository<Department,Long> {
 
     @Transactional
     @Modifying
-    void deleteByCompanyId(Integer companyId);
+    void deleteByCompanyId(Long companyId);
+
+    boolean existsByCompanyId(Long companyId);
 }

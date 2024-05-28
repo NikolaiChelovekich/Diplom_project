@@ -48,8 +48,12 @@ public class Company {
 
 
     @JsonIgnore
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.PERSIST)
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
+    private List<Department> departments;
 
 }

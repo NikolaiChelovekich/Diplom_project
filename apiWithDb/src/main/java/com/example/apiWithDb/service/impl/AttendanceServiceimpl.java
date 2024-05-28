@@ -3,6 +3,7 @@ package com.example.apiWithDb.service.impl;
 import com.example.apiWithDb.dto.AttendanceDto;
 import com.example.apiWithDb.entities.AttendanceRecord;
 import com.example.apiWithDb.entities.Employee;
+import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.exception.AppException;
 import com.example.apiWithDb.mappers.AttendanceMapper;
 import com.example.apiWithDb.repository.AttendaceRepository;
@@ -37,7 +38,8 @@ public class AttendanceServiceimpl implements AttendanceService {
 
     @Override
     public String createAttendanceRecord(AttendanceDto attendanceDto, Authentication authentication) {
-        Employee employee =   employeeRepository.findByLogin(userService.findUserByToken(authentication).getLogin())
+        String login = userService.findUserByToken(authentication).getLogin();
+        Employee employee =   employeeRepository.findByLogin(login)
                 .orElseThrow(() -> new AppException("Employee not found ", HttpStatus.NOT_FOUND,404));
 
         if (attendanceDto.getRecordDate().isAfter(LocalDate.now()))

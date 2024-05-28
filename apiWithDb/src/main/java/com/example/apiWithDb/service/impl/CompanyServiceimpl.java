@@ -49,14 +49,14 @@ public class CompanyServiceimpl implements CompanyService {
             Company existingCompany = existingCompanyOpt.get();
 
             // Проверяем, является ли аутентифицированный пользователь владельцем компании
-            if (existingCompany.getUser().getId().equals(user.getId())) {
+            if (existingCompany.getUser() != null && existingCompany.getUser().getId().equals(user.getId())) {
                 // Обновляем данные компании
                 company.setUser(user);
                 companyRepository.save(company);
                 return "Success";
-            } else {
-                // Возвращаем сообщение об ошибке, если пользователь не авторизован
-                 throw new AppException("Not your company",HttpStatus.FORBIDDEN,403);
+               } else {
+               // Возвращаем сообщение об ошибке, если пользователь не авторизован
+                   throw new AppException("Not your company",HttpStatus.FORBIDDEN,403);
             }
         } else {
             // Возвращаем сообщение об ошибке, если компания не найдена
@@ -64,26 +64,28 @@ public class CompanyServiceimpl implements CompanyService {
         }
     }
 
+
     @Override
-    public String deleteCompany(Integer companyId, Authentication authentication) {
-        departmentRepository.deleteByCompanyId(companyId);
+    public String deleteCompany(Long companyId, Authentication authentication) {
+
         User user = userService.findUserByToken(authentication);
         Optional<Company> existingCompanyOpt = companyRepository.findById(companyId);
         if (existingCompanyOpt.isEmpty()) {
             throw new AppException("Запрошенная компания не существует!", HttpStatus.NOT_FOUND, 404);
         }
         // Извлекаем компанию
+
         Company company = existingCompanyOpt.get();
         // Проверяем, принадлежит ли компания аутентифицированному пользователю
         if (!company.getUser().getId().equals(user.getId())) {
             throw new AppException("Вы не имеете прав на доступ к этой компании!", HttpStatus.FORBIDDEN, 403);
         }
-        companyRepository.deleteCompanyByIdAndUserId(companyId,user.getId());
+        companyRepository.deleteCompanyByIdAndUserId(companyId, user.getId());
         return "Success";
     }
 
     @Override
-    public Company getCompanyForAdmin(Integer companyId, Authentication authentication) {
+    public Company getCompanyForAdmin(Long companyId, Authentication authentication) {
         User user = userService.findUserByToken(authentication);
 
         // Проверяем, существует ли компания с заданным идентификатором

@@ -15,6 +15,14 @@ public class EmailService {
     }
 
     public void sensSimpleMessage(MailBody mailBody) {
+        if (mailBody.text() == null || mailBody.text().isEmpty()) {
+            throw new IllegalArgumentException("Message body cannot be empty");
+        }
+
+        if (mailBody.subject().isEmpty()) {
+            throw new IllegalArgumentException("Subject cannot be empty");
+        }
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mailBody.to());
         message.setFrom("viewerstuff@gmail.com");
