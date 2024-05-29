@@ -97,8 +97,11 @@ public class AttendanceServiceimpl implements AttendanceService {
         if (attendanceDate.isAfter(LocalDate.now()))
             throw new AppException("Attendance date cannot be in the future", HttpStatus.BAD_REQUEST, 400);
 
-       return attendanceMapper.toAttendanceResponseDto(attendaceRepository.findByDateAndEmployeeId(attendanceDate,employee.getId())
+       AttendanceResponseDto attendanceResponseDto = attendanceMapper.toAttendanceResponseDto(attendaceRepository.findByDateAndEmployeeId(attendanceDate,employee.getId())
                .orElseThrow(() -> new AppException("AttendanceRecord not found",HttpStatus.NOT_FOUND,404)));
+
+       attendanceResponseDto.setHoursThisMonth(getTotalWorkedTimeForMonth(authentication,attendanceDate,employee.getId()).toString());
+       return attendanceResponseDto;
     }
 
     @Override
