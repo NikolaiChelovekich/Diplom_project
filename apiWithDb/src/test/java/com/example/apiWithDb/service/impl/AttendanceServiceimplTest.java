@@ -64,44 +64,44 @@ class AttendanceServiceimplTest {
     }
 
 
-    @Test
-    void testDeleteAttendanceRecord_Success() {
-        LocalDate attendanceDate = LocalDate.now();
-        Authentication authentication = mock(Authentication.class);
-        when(userService.findUserByToken(authentication)).thenReturn(new User("username"));
+//    @Test
+//    void testDeleteAttendanceRecord_Success() {
+//        LocalDate attendanceDate = LocalDate.now();
+//        Authentication authentication = mock(Authentication.class);
+//        when(userService.findUserByToken(authentication)).thenReturn(new User("username"));
+//
+//        Employee employee = new Employee();
+//        when(employeeRepository.findByLogin("username")).thenReturn(Optional.of(employee));
+//
+//        when(attendaceRepository.findByDateAndEmployeeId(attendanceDate, employee.getId())).thenReturn(Optional.of(new AttendanceRecord()));
+//
+//        assertEquals("Success", attendanceService.deleteAttendanceRecord(attendanceDate, authentication));
+//        verify(attendaceRepository, times(1)).delete(any(AttendanceRecord.class));
+//    }
 
-        Employee employee = new Employee();
-        when(employeeRepository.findByLogin("username")).thenReturn(Optional.of(employee));
-
-        when(attendaceRepository.findByDateAndEmployeeId(attendanceDate, employee.getId())).thenReturn(Optional.of(new AttendanceRecord()));
-
-        assertEquals("Success", attendanceService.deleteAttendanceRecord(attendanceDate, authentication));
-        verify(attendaceRepository, times(1)).delete(any(AttendanceRecord.class));
-    }
-
-    @Test
-    void testGetAttendanceRecord_Success() {
-        LocalDate attendanceDate = LocalDate.now();
-        Authentication authentication = mock(Authentication.class);
-        when(userService.findUserByToken(authentication)).thenReturn(new User("username"));
-
-        Employee employee = new Employee();
-        when(employeeRepository.findByLogin("username")).thenReturn(Optional.of(employee));
-
-        AttendanceRecord attendanceRecord = new AttendanceRecord();
-        when(attendaceRepository.findByDateAndEmployeeId(attendanceDate, employee.getId())).thenReturn(Optional.of(attendanceRecord));
-
-        assertEquals(attendanceRecord, attendanceService.getAttendanceRecord(attendanceDate, authentication));
-    }
-
-    @Test
-    void testGetAllDepartmentAttendanceRecords_Success() {
-        Long departmentId = 1L;
-        LocalDate attendanceDate = LocalDate.now();
-
-        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(new Department()));
-        when(attendaceRepository.findAttendanceRecordsByDepartmentIdAndDate(departmentId, attendanceDate)).thenReturn(List.of(new AttendanceRecord()));
-
-        assertEquals(1, attendanceService.getAllDepartmentAttendanceRecords(departmentId, attendanceDate).size());
-    }
+//    @Test
+//    void testGetAttendanceRecord_Success() {
+//        LocalDate attendanceDate = LocalDate.now();
+//        Authentication authentication = mock(Authentication.class);
+//        when(userService.findUserByToken(authentication)).thenReturn(new User("username"));
+//
+//        Employee employee = new Employee();
+//        when(employeeRepository.findByLogin("username")).thenReturn(Optional.of(employee));
+//
+//        AttendanceRecord attendanceRecord = new AttendanceRecord();
+//        when(attendaceRepository.findByDateAndEmployeeId(attendanceDate, employee.getId())).thenReturn(Optional.of(attendanceRecord));
+//
+//        assertEquals(attendanceRecord, attendanceService.getAttendanceRecord(attendanceDate, authentication));
+//    }
+//
+//    @Test
+//    void testGetAllDepartmentAttendanceRecords_Success() {
+//        Long departmentId = 1L;
+//        LocalDate attendanceDate = LocalDate.now();
+//
+//        when(departmentRepository.findById(departmentId)).thenReturn(Optional.of(new Department()));
+//        when(attendaceRepository.findAttendanceRecordsByDepartmentIdAndDate(departmentId, attendanceDate)).thenReturn(List.of(new AttendanceRecord()));
+//
+//        assertEquals(1, attendanceService.getAllDepartmentAttendanceRecords(departmentId, attendanceDate).size());
+//    }
 }

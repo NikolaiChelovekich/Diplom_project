@@ -6,7 +6,8 @@ import com.example.apiWithDb.entities.Employee;
 import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.exception.AppException;
 import com.example.apiWithDb.mappers.AttendanceMapper;
-import com.example.apiWithDb.repository.AttendaceRepository;
+import com.example.apiWithDb.repository.AttendanceRepository;
+import com.example.apiWithDb.repository.AttendanceRepository;
 import com.example.apiWithDb.repository.DepartmentRepository;
 import com.example.apiWithDb.repository.employeeRepository;
 import com.example.apiWithDb.service.AttendanceService;
@@ -22,13 +23,13 @@ import java.util.Optional;
 @Service
 public class AttendanceServiceimpl implements AttendanceService {
 
-    private final AttendaceRepository attendaceRepository;
+    private final AttendanceRepository attendaceRepository;
     private final employeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
     private final UserService userService;
     private final AttendanceMapper attendanceMapper;
 
-    public AttendanceServiceimpl(AttendaceRepository attendaceRepository, employeeRepository employeeRepository, DepartmentRepository departmentRepository, UserService userService, AttendanceMapper attendanceMapper) {
+    public AttendanceServiceimpl(AttendanceRepository attendaceRepository, employeeRepository employeeRepository, DepartmentRepository departmentRepository, UserService userService, AttendanceMapper attendanceMapper) {
         this.attendaceRepository = attendaceRepository;
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
