@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class AttendanceResponseDto {
     private Long id;
 
     private Date recordDate;
-
     private LocalTime dailyTimeWorked;
+    private String hoursThisMonth;
     private EmployeeDto employee;
 }

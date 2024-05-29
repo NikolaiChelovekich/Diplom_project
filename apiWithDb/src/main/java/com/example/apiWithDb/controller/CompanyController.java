@@ -38,8 +38,7 @@ public class CompanyController {
         boolean isUser = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("USER"));
 
         Object data = isAdmin ? CompanyService.getAllCompanies(authentication)
-                : isUser ? CompanyService.getCompanyForEmployee(authentication)
-                : null;
+                : CompanyService.getCompanyForEmployee(authentication);
 
         return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, data);
     }

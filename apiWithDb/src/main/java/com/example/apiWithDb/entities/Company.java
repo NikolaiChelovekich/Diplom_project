@@ -48,7 +48,7 @@ public class Company {
 
 
     @JsonIgnore
-    @ManyToOne(targetEntity = User.class, cascade = CascadeType.DETACH)
+    @OneToOne(targetEntity = User.class, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

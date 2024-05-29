@@ -4,6 +4,7 @@ import com.example.apiWithDb.dto.AttendanceRequestDto;
 import com.example.apiWithDb.dto.AttendanceResponseDto;
 import com.example.apiWithDb.entities.AttendanceRecord;
 import com.example.apiWithDb.entities.Employee;
+import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.exception.AppException;
 import com.example.apiWithDb.mappers.AttendanceMapper;
 import com.example.apiWithDb.repository.AttendanceRepository;
@@ -15,8 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AttendanceServiceimpl implements AttendanceService {
@@ -97,9 +102,46 @@ public class AttendanceServiceimpl implements AttendanceService {
     }
 
     @Override
-    public List<AttendanceResponseDto> getAllDepartmentAttendanceRecords(Long departmentId, LocalDate attendanceDate) {
+    public List<AttendanceResponseDto> getAllDepartmentAttendanceRecords(Long departmentId, LocalDate attendanceDate, Authentication authentication) {
         departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new AppException("Department not found", HttpStatus.NOT_FOUND,404));
-        return attendanceMapper.toAttendanceResponseDtoList(attendaceRepository.findAttendanceRecordsByDepartmentIdAndDate(departmentId,attendanceDate));
+                .orElseThrow(() -> new AppException("Department not found", HttpStatus.NOT_FOUND, 404));
+
+        List<AttendanceRecord> attendanceRecords = attendaceRepository.findAttendanceRecordsByDepartmentIdAndDate(departmentId, attendanceDate);
+        List<AttendanceResponseDto> attendanceResponseDtos = attendanceMapper.toAttendanceResponseDtoList(attendanceRecords);
+
+        // Получаем список уникальных сотрудников из записей посещаемости
+        Set<Long> employeeIds = attendanceRecords.stream()
+                .map(record -> record.getEmployee().getId())
+                .collect(Collectors.toSet());
+
+        // Вычисляем и устанавливаем общее отработанное время за месяц для каждого сотрудника
+        for (AttendanceResponseDto dto : attendanceResponseDtos) {
+            Long employeeId = dto.getEmployee().getId();
+            Duration totalWorkedTimeForMonth = getTotalWorkedTimeForMonth(authentication, attendanceDate, employeeId);
+            dto.setHoursThisMonth(totalWorkedTimeForMonth.toString());
+        }
+        return attendanceResponseDtos;
     }
+
+    public Duration getTotalWorkedTimeForMonth(Authentication authentication, LocalDate month, Long employeeId) {
+        User user = userService.findUserByToken(authentication);
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new AppException("Employee not found", HttpStatus.NOT_FOUND, 404));
+
+        LocalDate firstDayOfMonth = month.withDayOfMonth(1);
+        LocalDate lastDayOfMonth = month.withDayOfMonth(month.lengthOfMonth());
+
+        List<AttendanceRecord> attendances = attendaceRepository.getAllAttendancesForDateRangeAndEmployee(firstDayOfMonth, lastDayOfMonth, employee.getId());
+
+        long totalWorkedSeconds = 0;
+
+        for (AttendanceRecord attendance : attendances) {
+            totalWorkedSeconds += attendance.getDailyTimeWorked().toSecondOfDay();
+        }
+        return Duration.ofSeconds(totalWorkedSeconds);
+    }
+
+
+
+
 }
