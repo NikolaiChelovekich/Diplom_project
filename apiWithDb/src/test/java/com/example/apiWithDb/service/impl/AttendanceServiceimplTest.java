@@ -1,3 +1,5 @@
+package com.example.apiWithDb.service.impl;
+
 import com.example.apiWithDb.dto.AttendanceDto;
 import com.example.apiWithDb.entities.AttendanceRecord;
 import com.example.apiWithDb.entities.Department;
@@ -5,7 +7,8 @@ import com.example.apiWithDb.entities.Employee;
 import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.exception.AppException;
 import com.example.apiWithDb.mappers.AttendanceMapper;
-import com.example.apiWithDb.repository.AttendaceRepository;
+import com.example.apiWithDb.repository.AttendanceRepository;
+import com.example.apiWithDb.repository.AttendanceRepository;
 import com.example.apiWithDb.repository.DepartmentRepository;
 import com.example.apiWithDb.repository.employeeRepository;
 import com.example.apiWithDb.service.UserService;
@@ -28,7 +31,7 @@ import static org.mockito.Mockito.*;
 class AttendanceServiceimplTest {
 
     @Mock
-    private AttendaceRepository attendaceRepository;
+    private AttendanceRepository attendaceRepository;
 
     @Mock
     private employeeRepository employeeRepository;
