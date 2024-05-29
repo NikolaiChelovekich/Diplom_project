@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/company/{companyId}/departments/{departmentId}/employee/{employeeId}/attendance")
+@RequestMapping("/company/{companyId}/departments/{departmentId}/attendance")
 @SecurityRequirement(name = "bearerAuth")
 public class AttendanceController {
 
