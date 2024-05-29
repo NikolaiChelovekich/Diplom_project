@@ -1,6 +1,7 @@
 package com.example.apiWithDb.service;
 
-import com.example.apiWithDb.dto.AttendanceDto;
+import com.example.apiWithDb.dto.AttendanceRequestDto;
+import com.example.apiWithDb.dto.AttendanceResponseDto;
 import com.example.apiWithDb.entities.AttendanceRecord;
 import org.springframework.security.core.Authentication;
 
@@ -9,9 +10,9 @@ import java.util.List;
 
 public interface AttendanceService {
 
-    public String createAttendanceRecord(AttendanceDto attendanceDto, Authentication authentication);
-    public String updateAttendanceRecord(AttendanceDto attendanceDto,  Authentication authentication);
+    public String createAttendanceRecord(AttendanceRequestDto attendanceDto, Authentication authentication);
+    public String updateAttendanceRecord(AttendanceRequestDto attendanceDto, Authentication authentication);
     public String deleteAttendanceRecord(LocalDate attendanceDate,Authentication authentication);
-    public AttendanceRecord getAttendanceRecord(LocalDate attendanceDate,Authentication authentication);
-    List<AttendanceRecord> getAllDepartmentAttendanceRecords(Long departmentId, LocalDate attendanceDate);
+    public AttendanceResponseDto getAttendanceRecord(LocalDate attendanceDate, Authentication authentication);
+    List<AttendanceResponseDto> getAllDepartmentAttendanceRecords(Long departmentId, LocalDate attendanceDate);
 }

@@ -1,25 +1,24 @@
 package com.example.apiWithDb.dto;
 
-import com.example.apiWithDb.entities.Employee;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class AttendanceDto {
+public class AttendanceResponseDto {
 
     private Long id;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate recordDate;
+
+    private Date recordDate;
+
     private LocalTime dailyTimeWorked;
+    private EmployeeDto employee;
 }

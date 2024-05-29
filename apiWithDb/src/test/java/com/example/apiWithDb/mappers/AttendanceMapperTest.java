@@ -1,6 +1,6 @@
 package com.example.apiWithDb.mappers;
 
-import com.example.apiWithDb.dto.AttendanceDto;
+import com.example.apiWithDb.dto.AttendanceRequestDto;
 import com.example.apiWithDb.entities.AttendanceRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class AttendanceMapperTest {
 
     @Test
     void testToAttendanceRecord() {
-        AttendanceDto attendanceDto = AttendanceDto.builder()
+        AttendanceRequestDto attendanceDto = AttendanceRequestDto.builder()
                 .id(1L)
                 .recordDate(LocalDate.of(2023, 5, 27))
                 .dailyTimeWorked(LocalTime.of(8, 0))

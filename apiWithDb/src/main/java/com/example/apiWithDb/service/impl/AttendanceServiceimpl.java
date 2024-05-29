@@ -1,12 +1,11 @@
 package com.example.apiWithDb.service.impl;
 
-import com.example.apiWithDb.dto.AttendanceDto;
+import com.example.apiWithDb.dto.AttendanceRequestDto;
+import com.example.apiWithDb.dto.AttendanceResponseDto;
 import com.example.apiWithDb.entities.AttendanceRecord;
 import com.example.apiWithDb.entities.Employee;
-import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.exception.AppException;
 import com.example.apiWithDb.mappers.AttendanceMapper;
-import com.example.apiWithDb.repository.AttendanceRepository;
 import com.example.apiWithDb.repository.AttendanceRepository;
 import com.example.apiWithDb.repository.DepartmentRepository;
 import com.example.apiWithDb.repository.employeeRepository;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AttendanceServiceimpl implements AttendanceService {
@@ -38,7 +36,7 @@ public class AttendanceServiceimpl implements AttendanceService {
     }
 
     @Override
-    public String createAttendanceRecord(AttendanceDto attendanceDto, Authentication authentication) {
+    public String createAttendanceRecord(AttendanceRequestDto attendanceDto, Authentication authentication) {
         String login = userService.findUserByToken(authentication).getLogin();
         Employee employee =   employeeRepository.findByLogin(login)
                 .orElseThrow(() -> new AppException("Employee not found ", HttpStatus.NOT_FOUND,404));
@@ -56,7 +54,7 @@ public class AttendanceServiceimpl implements AttendanceService {
     }
 
     @Override
-    public String updateAttendanceRecord(AttendanceDto attendanceDto,Authentication authentication) {
+    public String updateAttendanceRecord(AttendanceRequestDto attendanceDto, Authentication authentication) {
         Employee employee =   employeeRepository.findByLogin(userService.findUserByToken(authentication).getLogin())
                 .orElseThrow(() -> new AppException("Employee not found ", HttpStatus.NOT_FOUND,404));
 
@@ -87,21 +85,21 @@ public class AttendanceServiceimpl implements AttendanceService {
     }
 
     @Override
-    public AttendanceRecord getAttendanceRecord(LocalDate attendanceDate,Authentication authentication) {
+    public AttendanceResponseDto getAttendanceRecord(LocalDate attendanceDate, Authentication authentication) {
         Employee employee =   employeeRepository.findByLogin(userService.findUserByToken(authentication).getLogin())
                 .orElseThrow(() -> new AppException("Employee not found ", HttpStatus.NOT_FOUND,404));
 
         if (attendanceDate.isAfter(LocalDate.now()))
             throw new AppException("Attendance date cannot be in the future", HttpStatus.BAD_REQUEST, 400);
 
-       return attendaceRepository.findByDateAndEmployeeId(attendanceDate,employee.getId())
-                .orElseThrow(() -> new AppException("AttendanceRecord not found",HttpStatus.NOT_FOUND,404));
+       return attendanceMapper.toAttendanceResponseDto(attendaceRepository.findByDateAndEmployeeId(attendanceDate,employee.getId())
+               .orElseThrow(() -> new AppException("AttendanceRecord not found",HttpStatus.NOT_FOUND,404)));
     }
 
     @Override
-    public List<AttendanceRecord> getAllDepartmentAttendanceRecords(Long departmentId, LocalDate attendanceDate) {
+    public List<AttendanceResponseDto> getAllDepartmentAttendanceRecords(Long departmentId, LocalDate attendanceDate) {
         departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new AppException("Department not found", HttpStatus.NOT_FOUND,404));
-        return attendaceRepository.findAttendanceRecordsByDepartmentIdAndDate(departmentId,attendanceDate);
+        return attendanceMapper.toAttendanceResponseDtoList(attendaceRepository.findAttendanceRecordsByDepartmentIdAndDate(departmentId,attendanceDate));
     }
 }

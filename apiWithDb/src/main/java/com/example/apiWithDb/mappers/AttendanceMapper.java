@@ -1,9 +1,8 @@
 package com.example.apiWithDb.mappers;
 
-import com.example.apiWithDb.dto.AttendanceDto;
-import com.example.apiWithDb.dto.EmployeeDto;
+import com.example.apiWithDb.dto.AttendanceRequestDto;
+import com.example.apiWithDb.dto.AttendanceResponseDto;
 import com.example.apiWithDb.entities.AttendanceRecord;
-import com.example.apiWithDb.entities.Employee;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -11,6 +10,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface AttendanceMapper {
 
-    AttendanceRecord toAttendanceRecord(AttendanceDto attendanceDto);
+    AttendanceRecord toAttendanceRecord(AttendanceRequestDto attendanceDto);
+    AttendanceResponseDto toAttendanceResponseDto(AttendanceRecord attendanceRecord);
+    List<AttendanceResponseDto> toAttendanceResponseDtoList(List<AttendanceRecord> attendanceRecord);
 
 }

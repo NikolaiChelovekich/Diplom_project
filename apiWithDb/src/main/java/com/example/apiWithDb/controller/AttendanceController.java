@@ -1,8 +1,6 @@
 package com.example.apiWithDb.controller;
 
-import com.example.apiWithDb.dto.AttendanceDto;
-import com.example.apiWithDb.entities.AttendanceRecord;
-import com.example.apiWithDb.entities.Department;
+import com.example.apiWithDb.dto.AttendanceRequestDto;
 import com.example.apiWithDb.response.ResponseHandler;
 import com.example.apiWithDb.service.AttendanceService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -45,14 +43,14 @@ public class AttendanceController {
 
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping
-    public String createAttendanceRecordDetails(@RequestBody AttendanceDto attendanceDto, Authentication authentication) {
+    public String createAttendanceRecordDetails(@RequestBody AttendanceRequestDto attendanceDto, Authentication authentication) {
         attendanceService.createAttendanceRecord(attendanceDto, authentication);
         return "AttendanceRecord created";
     }
 
     @PreAuthorize("hasAuthority('USER')")
     @PutMapping
-    public String updateAttendanceRecordDetails(@RequestBody AttendanceDto attendanceDto, Authentication authentication) {
+    public String updateAttendanceRecordDetails(@RequestBody AttendanceRequestDto attendanceDto, Authentication authentication) {
         attendanceService.updateAttendanceRecord(attendanceDto, authentication);
         return "AttendanceRecord created";
     }
