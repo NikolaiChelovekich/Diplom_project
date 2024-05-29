@@ -31,4 +31,6 @@ public class EmployeeDto {
     private String position;
     @JsonProperty("birthDate")
     private Date birthDate;
+    @JsonProperty("login")
+    private String login;
 }
