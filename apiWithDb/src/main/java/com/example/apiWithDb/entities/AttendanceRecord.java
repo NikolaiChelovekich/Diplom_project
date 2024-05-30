@@ -32,8 +32,6 @@ public class AttendanceRecord {
     @Column(nullable = false)
     private LocalTime dailyTimeWorked;
 
-    //@Column(nullable = false)
-    // private LocalTime WorkedTimeInMonth;
 
     @ManyToOne(targetEntity = Employee.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
