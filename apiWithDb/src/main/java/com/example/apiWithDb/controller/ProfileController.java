@@ -6,6 +6,7 @@ import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.mappers.UserMapper;
 import com.example.apiWithDb.service.EmployeeService;
 import com.example.apiWithDb.service.UserService;
+import com.example.apiWithDb.utils.Role;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -31,10 +32,11 @@ public class ProfileController {
         switch (user.getRole()) {
             case USER:
                 Employee employee = employeeService.findByLogin(user.getLogin());
+                employee.setRole(Role.USER);
                 return ResponseEntity.ok(employee);
             case ADMIN:
                 UserDto userDto = userMapper.toUserDto(user);
-                return ResponseEntity.ok(user);
+                return ResponseEntity.ok(userDto);
             default:
                 throw new IllegalArgumentException("Invalid role specified");
         }
