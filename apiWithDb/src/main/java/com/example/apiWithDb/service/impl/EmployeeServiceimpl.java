@@ -1,14 +1,18 @@
 package com.example.apiWithDb.service.impl;
 
 import com.example.apiWithDb.dto.EmployeeDto;
+import com.example.apiWithDb.dto.EmployeeDtoNoLogin;
 import com.example.apiWithDb.dto.SignUpDto;
+import com.example.apiWithDb.dto.UserDto;
 import com.example.apiWithDb.entities.Department;
 import com.example.apiWithDb.entities.Employee;
+import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.exception.AppException;
 import com.example.apiWithDb.mappers.EmployeeMapper;
 import com.example.apiWithDb.repository.DepartmentRepository;
 import com.example.apiWithDb.repository.employeeRepository;
 import com.example.apiWithDb.service.EmployeeService;
+import com.example.apiWithDb.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +25,13 @@ public class EmployeeServiceimpl implements EmployeeService {
     private final employeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
     private final EmployeeMapper employeeMapper;
+    private final UserService userService;
 
-    public EmployeeServiceimpl(employeeRepository employeeRepository, DepartmentRepository departmentRepository, EmployeeMapper employeeMapper) {
+    public EmployeeServiceimpl(employeeRepository employeeRepository, DepartmentRepository departmentRepository, EmployeeMapper employeeMapper, UserService userService) {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
         this.employeeMapper = employeeMapper;
+        this.userService = userService;
     }
 
     @Override
@@ -39,11 +45,12 @@ public class EmployeeServiceimpl implements EmployeeService {
     }
 
     @Override
-    public String updateEmployee(EmployeeDto employeeDto, Long departmentId) {
+    public String updateEmployee(EmployeeDtoNoLogin employeeDto, Long departmentId) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new AppException("department not found",HttpStatus.NOT_FOUND,404));
         Employee employee = employeeRepository.findById(employeeDto.getId())
                         .orElseThrow(() -> new AppException("Employee not found ", HttpStatus.NOT_FOUND,404));
+
 
         employee.setEmployeePhoto(employeeDto.getEmployeePhoto());
         employee.setCountry(employeeDto.getCountry());

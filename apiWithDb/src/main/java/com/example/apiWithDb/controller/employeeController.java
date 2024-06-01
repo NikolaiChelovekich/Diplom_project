@@ -3,6 +3,7 @@ package com.example.apiWithDb.controller;
 
 import com.example.apiWithDb.config.UserAuthProvider;
 import com.example.apiWithDb.dto.EmployeeDto;
+import com.example.apiWithDb.dto.EmployeeDtoNoLogin;
 import com.example.apiWithDb.dto.UserDto;
 import com.example.apiWithDb.entities.Employee;
 import com.example.apiWithDb.response.ResponseHandler;
@@ -64,7 +65,7 @@ public class employeeController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping
-    public String UpdateEmployeeDetails(@RequestBody EmployeeDto employeeDto, @PathVariable("departmentId") Long departmentId)
+    public String UpdateEmployeeDetails(@RequestBody EmployeeDtoNoLogin employeeDto, @PathVariable("departmentId") Long departmentId)
     {
 
         employeeService.findById(employeeDto.getId());
