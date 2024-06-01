@@ -44,8 +44,18 @@ public class EmployeeServiceimpl implements EmployeeService {
                 .orElseThrow(() -> new AppException("department not found",HttpStatus.NOT_FOUND,404));
         Employee employee = employeeRepository.findById(employeeDto.getId())
                         .orElseThrow(() -> new AppException("Employee not found ", HttpStatus.NOT_FOUND,404));
+
+        employee.setEmployeePhoto(employeeDto.getEmployeePhoto());
+        employee.setCountry(employeeDto.getCountry());
         employee.setDepartment(department);
+        employee.setBirthDate(employeeDto.getBirthDate());
+        employee.setFirstName(employeeDto.getFirstName());
+        employee.setLastName(employeeDto.getLastName());
+        employee.setPhoneNumber(employeeDto.getPhoneNumber());
+        employee.setPosition(employeeDto.getPosition());
+
         employeeRepository.save(employee);
+
         return "Success";
     }
 

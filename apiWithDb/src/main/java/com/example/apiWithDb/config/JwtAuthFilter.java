@@ -12,7 +12,6 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
-
     private final UserAuthProvider userAuthProvider;
 
     @Override
@@ -25,7 +24,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if(header !=null)
         {
           String[] elements = header.split(" ");
-
           if(elements.length == 2 && "Bearer".equals(elements[0]))
           {
               try {
@@ -39,7 +37,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
               }
           }
         }
-
         filterChain.doFilter(request, response);
     }
 }

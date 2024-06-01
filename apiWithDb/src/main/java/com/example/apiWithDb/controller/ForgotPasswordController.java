@@ -26,7 +26,10 @@ public class ForgotPasswordController {
     private final EmailService emailService;
     private final ForgotPasswordRepository forgotPasswordRepository;
     private final PasswordEncoder passwordEncoder;
-    public ForgotPasswordController(UserRepository userRepository, EmailService emailService, ForgotPasswordRepository forgotPasswordRepository, PasswordEncoder passwordEncoder) {
+    public ForgotPasswordController(UserRepository userRepository,
+                                    EmailService emailService,
+                                    ForgotPasswordRepository forgotPasswordRepository,
+                                    PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.forgotPasswordRepository = forgotPasswordRepository;
@@ -63,29 +66,30 @@ public class ForgotPasswordController {
     public ResponseEntity<String> verifyOtp(@PathVariable Integer otp, @PathVariable String email){
 
         User user = userRepository.findBylogin(email)
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND,404));
+                .orElseThrow(() -> new AppException("Unknown user",
+                                                    HttpStatus.NOT_FOUND,404));
 
         ForgotPassword fp = forgotPasswordRepository.findByOtpAndUser(otp,user)
-                .orElseThrow(() -> new AppException("Invalid OTP for email", HttpStatus.EXPECTATION_FAILED,417));
+                .orElseThrow(() -> new AppException("Invalid OTP for email",
+                                                    HttpStatus.EXPECTATION_FAILED,417));
+
         if(fp.getExpirationTime().before(Date.from(Instant.now()))){
             forgotPasswordRepository.deleteById(fp.getFpid());
-            return new ResponseEntity<>("OTP has expired", HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>("OTP has expired",
+                                                    HttpStatus.EXPECTATION_FAILED);
         }
-
         return ResponseEntity.ok("OTP verifed");
     }
 
     @PostMapping("/changePassword/{email}")
     public ResponseEntity<String> changePasswordHandler(@RequestBody ChangePassword changePassword,
                                                         @PathVariable String email){
-
         userRepository.findBylogin(email)
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND,404));
 
         if(!Objects.equals(changePassword.password(), changePassword.repeatPassword())) {
             return new ResponseEntity<>("Please enter the password again!",HttpStatus.EXPECTATION_FAILED);
         }
-
         String encodedPassword = passwordEncoder.encode(changePassword.password());
         userRepository.updatePassword(email, encodedPassword);
 

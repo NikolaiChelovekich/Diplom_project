@@ -44,8 +44,10 @@ public class CompanyController {
     }
 
     @GetMapping("{CompanyId}")
-    public ResponseEntity<Object> getCompanyDetailsForAdmin(@PathVariable("CompanyId") Long CompanyId,Authentication authentication) {
-        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены", HttpStatus.OK, CompanyService.getCompanyForAdmin(CompanyId,authentication));
+    public ResponseEntity<Object> getCompanyDetailsForAdmin(@PathVariable("CompanyId") Long CompanyId,
+                                                                        Authentication authentication) {
+        return ResponseHandler.responseBuilder("Запрошенные данные предоставлены",
+                HttpStatus.OK, CompanyService.getCompanyForAdmin(CompanyId,authentication));
     }
     
 

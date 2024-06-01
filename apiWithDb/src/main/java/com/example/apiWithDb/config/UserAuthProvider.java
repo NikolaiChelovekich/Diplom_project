@@ -23,7 +23,6 @@ import java.util.Date;
 public class UserAuthProvider {
     @Value("${security.jwt.token.secret-key:secret-value}")
     private String secretKey;
-
     private final UserService userService;
 
     @PostConstruct
@@ -49,13 +48,8 @@ public class UserAuthProvider {
                 .build();
 
         DecodedJWT decoded = verifier.verify(token);
-
         UserDto user = userService.findBylogin(decoded.getIssuer());
 
         return new UsernamePasswordAuthenticationToken(user, null, Arrays.asList(user.getRole()));
     }
-
-
-
-
 }

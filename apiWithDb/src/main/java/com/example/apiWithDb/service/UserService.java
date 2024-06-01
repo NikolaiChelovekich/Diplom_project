@@ -25,17 +25,9 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDto findBylogin(String login)
-    {
-        User user = userRepository.findBylogin(login)
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND,404));
-        return userMapper.toUserDto(user);
-    }
-
     public UserDto login(CredentialsDto credentialsDto){
         User user = userRepository.findBylogin(credentialsDto.getLogin())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND,404));
-
         if(passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()),user.getPassword()))
         {
             return userMapper.toUserDto(user);
@@ -46,12 +38,10 @@ public class UserService {
     public UserDto register(SignUpDto userDto, Role role)
     {
         Optional<User> optionalUser = userRepository.findBylogin(userDto.getLogin());
-
         if(optionalUser.isPresent())
         {
             throw new AppException("User already exist", HttpStatus.BAD_REQUEST,400);
         }
-
         User user = userMapper.signUpToUser(userDto);
         switch (role) {
             case USER:
@@ -63,11 +53,8 @@ public class UserService {
             default:
                 throw new IllegalArgumentException("Invalid role specified");
         }
-
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.getPassword())));
-
         User saveduser = userRepository.save(user);
-
         return userMapper.toUserDto(user);
     }
 
@@ -76,6 +63,13 @@ public class UserService {
         User user =  userRepository.findBylogin(userDto.getLogin())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND, 404));
     return user;
+    }
+
+    public UserDto findBylogin(String login)
+    {
+        User user = userRepository.findBylogin(login)
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND,404));
+        return userMapper.toUserDto(user);
     }
 
 

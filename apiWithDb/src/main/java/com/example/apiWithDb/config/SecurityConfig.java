@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) // Включает поддержку аннотаций @PreAuthorize
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
@@ -31,13 +31,9 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests((requests) -> requests
-                        // Уберите эндпоинты, для которых требуется аутентификация
                         .requestMatchers("/employee/**", "/company/**","/currentUser").authenticated()
-                        // Позволяйте доступ ко всем остальным эндпоинтам без аутентификации
                         .anyRequest().permitAll()
                 );
         return http.build();
     }
-
-
 }
