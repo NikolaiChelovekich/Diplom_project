@@ -88,7 +88,8 @@ public class ForgotPasswordController {
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND,404));
 
         if(!Objects.equals(changePassword.password(), changePassword.repeatPassword())) {
-            return new ResponseEntity<>("Please enter the password again!",HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>("Please enter the password again!",
+                                                    HttpStatus.EXPECTATION_FAILED);
         }
         String encodedPassword = passwordEncoder.encode(changePassword.password());
         userRepository.updatePassword(email, encodedPassword);

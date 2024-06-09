@@ -38,5 +38,4 @@ public class AuthController {
         return ResponseEntity.created(URI.create("/users/" + user.getId()))
                 .body(user);
     }
-
 }

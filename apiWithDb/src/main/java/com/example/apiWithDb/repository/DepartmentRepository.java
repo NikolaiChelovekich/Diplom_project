@@ -10,14 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department,Long> {
-
     Optional<Department> findByIdAndCompany(Long departmentId, Company company);
-
     List<Department> findByCompany(Company company);
-
     @Transactional
     @Modifying
     void deleteByCompanyId(Long companyId);
-
     boolean existsByCompanyId(Long companyId);
 }

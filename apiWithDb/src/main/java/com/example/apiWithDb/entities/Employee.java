@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="employees")
@@ -53,10 +54,13 @@ public class Employee {
     private String password;
 
     @JsonIgnore
-    @ManyToOne(targetEntity = Department.class, cascade = CascadeType.PERSIST)
+    @ManyToOne(targetEntity = Department.class)
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AttendanceRecord> attendanceRecords;
    // @JsonIgnore
 //    public Role getRole() {
 //        return role;

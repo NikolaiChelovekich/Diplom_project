@@ -10,6 +10,7 @@ import com.example.apiWithDb.entities.User;
 import com.example.apiWithDb.exception.AppException;
 import com.example.apiWithDb.mappers.EmployeeMapper;
 import com.example.apiWithDb.repository.DepartmentRepository;
+import com.example.apiWithDb.repository.UserRepository;
 import com.example.apiWithDb.repository.employeeRepository;
 import com.example.apiWithDb.service.EmployeeService;
 import com.example.apiWithDb.service.UserService;
@@ -26,12 +27,14 @@ public class EmployeeServiceimpl implements EmployeeService {
     private final DepartmentRepository departmentRepository;
     private final EmployeeMapper employeeMapper;
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public EmployeeServiceimpl(employeeRepository employeeRepository, DepartmentRepository departmentRepository, EmployeeMapper employeeMapper, UserService userService) {
+    public EmployeeServiceimpl(employeeRepository employeeRepository, DepartmentRepository departmentRepository, EmployeeMapper employeeMapper, UserService userService, UserRepository userRepository) {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
         this.employeeMapper = employeeMapper;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -68,9 +71,11 @@ public class EmployeeServiceimpl implements EmployeeService {
 
     @Override
     public String deleteEmployee(Long employeeId, Long departmentId) {
-        if(employeeRepository.findById(employeeId).isEmpty())
+        Optional<Employee> emp = employeeRepository.findById(employeeId);
+        if(emp.isEmpty())
             throw new AppException("Unknown employee", HttpStatus.NOT_FOUND,404);
-
+        UserDto userDto = userService.findBylogin(emp.get().getLogin());
+        userRepository.deleteByLogin(userDto.getLogin());
         if(departmentRepository.findById(departmentId).isEmpty())
             throw new AppException("Unknown department", HttpStatus.NOT_FOUND,404);
 
